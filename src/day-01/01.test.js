@@ -1,4 +1,4 @@
-import { findTwo, findThree } from './01';
+import { findTwo } from './01';
 import input from './input';
 const sampleInput = [1721, 979, 366, 299, 675, 1456];
 
@@ -12,9 +12,4 @@ describe('first star', () => {
     const result = findTwo({ target: 2020, input });
     expect(result).toEqual([788, 1232]);
   });
-});
-
-describe('2nd start', () => {
-  const result = findThree({ target: 2020, input: sampleInput });
-  console.log(result);
 });

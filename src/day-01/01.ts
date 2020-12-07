@@ -10,6 +10,8 @@ export const findTwo = ({
     return acc;
   }, {});
 
+  // return isTwoSumEqualTarget({ arr: input, ht, target });
+
   for (const [i, value] of input.entries()) {
     const diff = target - value;
     if (diff in ht && ht[diff] !== i) {
@@ -17,27 +19,25 @@ export const findTwo = ({
     }
   }
 };
-// https://paulrohan.medium.com/solving-the-classic-two-sum-and-three-sum-problem-in-javascript-7d5d1d47db03
-export const findThree = ({
-  input,
-  target,
-}: {
-  input: number[];
-  target: number;
-}): any /*[number, number, number] | void */ => {
-  const ht = input.reduce(
-    (acc: { [key: number]: { value: number; diff: number } }, value, i) => {
-      acc[i] = { value, diff: target - value };
-      return acc;
-    },
-    {},
-  );
-  return ht;
-};
 
-// uma segunda ht com diff: index
+// function isTwoSumEqualTarget({
+//   target,
+//   arr,
+//   ht,
+// }: {
+//   target: number;
+//   arr: number[];
+//   ht: { [key: number]: number };
+// }): [number, number] | void {
+//   for (const [i, value] of arr.entries()) {
+//     const diff = target - value;
 
-// um terceiro pass;
-/*
+//     const isDiffInHtIndex = diff in ht;
 
-*/
+//     const isFoundDiffInIndexNotTheCurrentNumber = ht[diff] !== i;
+
+//     if (isDiffInHtIndex && isFoundDiffInIndexNotTheCurrentNumber) {
+//       return [value, diff];
+//     }
+//   }
+// }
