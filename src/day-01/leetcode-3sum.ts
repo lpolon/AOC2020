@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/3sum/
-
+// TODO: melhorar: https://leetcode.com/problems/4sum/discuss/773256/nsum-general-solution-javascript-detailed-explanation-96ms
 /*
 - sort min -> max
 - first pass:
@@ -30,26 +30,20 @@ export function threeSum({
   const tripletsSet: Set<string> = new Set();
 
   for (const [i, value] of nums.entries()) {
-    const nextIndex = i + 1;
-    if (typeof nums[nextIndex] === 'undefined') break;
-    const diff = getDiffToTarget(target, [value, nums[nextIndex]]);
-    const foundElement = binarySearch({
-      numsArr: nums,
-      target: diff,
-    });
-    if (typeof foundElement === 'undefined') continue;
-    else {
-      if (i in foundElement || nextIndex in foundElement) {
-        continue;
+    for (let j = i + 1; j < nums.length; j += 1) {
+      const diff = getDiffToTarget(target, [value, nums[j]]);
+      const foundValue = binarySearch({
+        numsArr: nums,
+        target: diff,
+        skipIndex: [i, j],
+      });
+      if (typeof foundValue === 'undefined') continue;
+      else {
+        const triplet = [value, nums[j], foundValue];
+        // TODO: tirar esse sort lixo e achar uma forma de conferir se não estou adicionando o mesmo conjunto.
+        triplet.sort((a, b) => a - b);
+        tripletsSet.add(JSON.stringify({ ...triplet }));
       }
-      const triplet = [value, nums[nextIndex], Object.values(foundElement)[0]];
-      /*
-      colocar numa HT igual do exercício 1.
-      Se index do foundValue === value ou nextIndex
-      */
-      // TODO: tirar esse sort lixo e achar uma forma de conferir se não estou adicionando o mesmo conjunto.
-      triplet.sort((a, b) => b - a);
-      tripletsSet.add(JSON.stringify({ ...triplet }));
     }
   }
   const result: number[][] = [];
@@ -65,10 +59,12 @@ export function threeSum({
 function binarySearch({
   numsArr,
   target,
+  skipIndex,
 }: {
   numsArr: number[];
   target: number;
-}): { [key: number]: number } | undefined {
+  skipIndex: number[];
+}): number | undefined {
   let low = 0;
   let high = numsArr.length - 1;
   let mid;
@@ -76,7 +72,7 @@ function binarySearch({
   while (low <= high) {
     mid = Math.floor((low + high) / 2);
     midValue = numsArr[mid];
-    if (midValue === target) return { [mid]: midValue };
+    if (midValue === target && !skipIndex.includes(mid)) return midValue;
     if (midValue < target) low = mid + 1;
     else high = mid - 1;
   }
